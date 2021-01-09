@@ -1,0 +1,30 @@
+insmod all_video
+insmod vbe
+insmod vga
+insmod video_bochs
+menuentry "DB_OS" {
+	echo -e "***** WELCOME TO DBOS *****\n"
+	echo "You will be asked to provide display resolution"
+	echo -e "DBOS supports following resolutions: \n"
+	echo "text = vga 80x25 textmode"
+	echo "1024x768"
+	echo "800x600"
+	echo -e "640x480 \n"
+	echo "Please be careful in providing the resolution,"
+	echo "DBOS will fallback to the lowest possible resolution"
+	echo -e "if provided one is not in the above list \n"
+	echo "Please choose display resolution in pixels i.e. 1024x768:"
+	read __resolution
+	echo -e "\n"
+	echo "Booting..."
+	multiboot /boot/dbos-kernel emu=vbox,res=${__resolution}
+	module /boot/dbos.initrd.tar dbos.initrd
+	if [ -z "${__resolution}" ]; then
+		set gfxpayload=text
+	elif [ ${__resolution} == "text" ]; then
+		set gfxpayload=text
+	else
+		set gfxpayload=${__resolution}x32
+	fi
+	boot
+}

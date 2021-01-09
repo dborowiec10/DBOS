@@ -1,0 +1,47 @@
+diff -rupN host_old_gcc-7.1.0/fixincludes/mkfixinc.sh host_gcc-7.1.0/fixincludes/mkfixinc.sh
+--- host_old_gcc-7.1.0/fixincludes/mkfixinc.sh	2017-09-30 02:54:39.867428101 +0100
++++ host_gcc-7.1.0/fixincludes/mkfixinc.sh	2017-09-30 02:57:34.268032020 +0100
+@@ -11,6 +11,7 @@ target=fixinc.sh
+ 
+ # Check for special fix rules for particular targets
+ case $machine in
++    *-dbos* | \
+     i?86-*-cygwin* | \
+     i?86-*-mingw32* | \
+     x86_64-*-mingw32* | \
+diff -rupN host_old_gcc-7.1.0/libgcc/config.host host_gcc-7.1.0/libgcc/config.host
+--- host_old_gcc-7.1.0/libgcc/config.host	2017-09-30 02:54:45.335449218 +0100
++++ host_gcc-7.1.0/libgcc/config.host	2017-09-30 02:56:31.815831161 +0100
+@@ -99,7 +99,7 @@ arm*-*-*)
+ 	;;
+ avr-*-*)
+ 	cpu_type=avr
+-	;;    
++	;;
+ bfin*-*)
+ 	cpu_type=bfin
+ 	;;
+@@ -329,6 +329,14 @@ i[34567]86-*-mingw* | x86_64-*-mingw*)
+ esac
+ 
+ case ${host} in
++i[34567]86-*-dbos*)
++	extra_parts="$extra_parts crtbegin.o crtend.o"
++	tmake_file="$tmake_file i386/t-crtstuff t-crtstuff-pic t-libgcc-pic"
++	;;
++x86_64-*-dbos*)
++	extra_parts="$extra_parts crtbegin.o crtend.o"
++	tmake_file="$tmake_file i386/t-crtstuff t-crtstuff-pic t-libgcc-pic"
++	;;
+ aarch64*-*-elf | aarch64*-*-rtems*)
+ 	extra_parts="$extra_parts crtbegin.o crtend.o crti.o crtn.o"
+ 	extra_parts="$extra_parts crtfastmath.o"
+@@ -798,7 +806,7 @@ lm32-*-rtems*)
+ lm32-*-uclinux*)
+         extra_parts="$extra_parts crtbegin.o crtendS.o crtbeginT.o"
+         tmake_file="lm32/t-lm32 lm32/t-uclinux t-libgcc-pic t-softfp-sfdf t-softfp"
+-	;;	
++	;;
+ m32r-*-elf*)
+ 	tmake_file="$tmake_file m32r/t-m32r t-fdpbit"
+ 	extra_parts="$extra_parts crtinit.o crtfini.o"
