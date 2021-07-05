@@ -1,5 +1,5 @@
 # DBOS
-## Operating System project (Computer Science course [3rd year project] - Lancaster University)
+## Operating System 
 
 ### What is already there...
 #### Build process
