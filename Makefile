@@ -105,6 +105,7 @@ run_bochs:
 	${MAKE} run_bochs_real || ${MAKE} clean
 
 run_install_usb:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.machine sysroot/boot/grub/grub.cfg
 	${MAKE} build-system
 ifdef DEVICE
@@ -209,6 +210,7 @@ KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/memory/*.c))
 KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/process/*.c))
 KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/util/*.c))
 KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/vfs/*.c))
+KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/fpu/*.c))
 KERN_DRIVERS_OBJ = $(patsubst %.c,%.o,$(wildcard drivers/tarfs/*.c))
 KERN_DRIVERS_OBJ += $(patsubst %.c,%.o,$(wildcard drivers/devfs/*.c))
 KERN_DRIVERS_OBJ += $(patsubst %.c,%.o,$(wildcard drivers/devices/*.c))
