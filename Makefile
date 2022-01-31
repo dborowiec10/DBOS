@@ -74,37 +74,44 @@ lib:
 
 #### Install the system to usb stick and make it bootable
 install_usb:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.machine sysroot/boot/grub/grub.cfg
 	${MAKE} run_install_usb || ${MAKE} -i clean
 
 #### Run Virtualbox
 run_virtualbox:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.virtualbox sysroot/boot/grub/grub.cfg
 	${MAKE} run_virtualbox_real || ${MAKE} -i clean_virtualbox
 
 #### Run QEMU without grub (it supports multiboot)
 run_qemu:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.qemu sysroot/boot/grub/grub.cfg
 	${MAKE} run_qemu_real || ${MAKE} clean
 
 #### Install kernel, initial ramdisk and grub to a generated disk image
 #### Run this image on QEMU
 run_qemu_disk:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.qemu sysroot/boot/grub/grub.cfg
 	${MAKE} run_qemu_disk_real || ${MAKE} clean
 
 #### Install kernel, initial ramdisk and grub to a generated disk image
 #### Run this image on BOCHS
 run_bochs_disk:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.bochs sysroot/boot/grub/grub.cfg
 	${MAKE} run_bochs_disk_real || ${MAKE} clean
 
 #### Generate ISO using grub-mkrescue and run in BOCHS cdrom
 run_bochs:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.bochs sysroot/boot/grub/grub.cfg
 	${MAKE} run_bochs_real || ${MAKE} clean
 
 run_install_usb:
+	mkdir -p sysroot/boot/grub
 	cp config/grub.cfg.machine sysroot/boot/grub/grub.cfg
 	${MAKE} build-system
 ifdef DEVICE
@@ -209,6 +216,7 @@ KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/memory/*.c))
 KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/process/*.c))
 KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/util/*.c))
 KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/vfs/*.c))
+KERNEL_OBJ += $(patsubst %.c,%.o,$(wildcard kernel/fpu/*.c))
 KERN_DRIVERS_OBJ = $(patsubst %.c,%.o,$(wildcard drivers/tarfs/*.c))
 KERN_DRIVERS_OBJ += $(patsubst %.c,%.o,$(wildcard drivers/devfs/*.c))
 KERN_DRIVERS_OBJ += $(patsubst %.c,%.o,$(wildcard drivers/devices/*.c))
@@ -224,6 +232,7 @@ OBJECTS_TO_LINK = $(KERN_ASM_OBJ) $(KERNEL_OBJ) $(KERN_DRIVERS_OBJ)
 
 #### Link all objects using a linker script and generate dbos-kernel object
 build-kernel: ${OBJECTS_TO_LINK}
+	mkdir -p sysroot/boot
 	${TOOLCHAIN_LD} -m elf_i386_dbos -o sysroot/boot/dbos-kernel -T kernel/link.ld -nostdlib ${OBJECTS_TO_LINK} -Map kern.map
 
 #### Compile a C source file into object file
