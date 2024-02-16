@@ -1,5 +1,5 @@
-# DBOS
-## Operating System 
+# DBOS - Mini Operating System 
+![image](https://github.com/dborowiec10/DBOS/assets/20650619/eaedfd3c-b756-4510-971f-c5c43b507d75)
 
 ### What is already there...
 #### Build process
